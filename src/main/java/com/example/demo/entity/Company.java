@@ -19,3 +19,4 @@ public class Company {
     private String companyCode;
 
 }
+
