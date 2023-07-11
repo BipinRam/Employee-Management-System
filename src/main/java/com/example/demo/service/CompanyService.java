@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.entity.Company;
 import com.example.demo.repository.CompanyRepository;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,7 @@ public class CompanyService {
         return companyRepository.findAll();
     }
 //    UPDATE
-    public Company updateCompany (Long id , Company companyDetails){
+    public Company updateCompany (Long id , @NotNull Company companyDetails){
         Company com =  new Company();
         com.setCompanyName(companyDetails.getCompanyName());
         com.setCompanyCode(companyDetails.getCompanyCode());
@@ -32,4 +33,5 @@ public class CompanyService {
         companyRepository.deleteById(id);
     }
 }
+
 

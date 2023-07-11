@@ -22,8 +22,8 @@ public class CompanyController {
     public List<Company> readCompany(){
         return comService.getCompany();
     }
-    @PutMapping(value = "/company/read")
-    public Company readCompany(@PathVariable (value = "id")Long id , @RequestBody Company companyDetails){
+    @PutMapping(value = "/company/update")
+    public Company updateCompany(@PathVariable (value = "id")Long id , @RequestBody Company companyDetails){
         return comService.updateCompany(id , companyDetails);
     }
     @DeleteMapping(value = "/company/delete")

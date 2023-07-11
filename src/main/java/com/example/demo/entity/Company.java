@@ -18,5 +18,6 @@ public class Company {
     @Column(name = "company_code")
     private String companyCode;
 
+
 }
 
