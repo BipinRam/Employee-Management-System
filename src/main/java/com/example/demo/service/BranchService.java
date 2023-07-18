@@ -22,12 +22,18 @@ public class BranchService {
           Branch branch = new Branch();
           branch.setBranchName(branchModel.getBranchName());
           branch.setBranchCode(branchModel.getBranchCode());
+
+          Company company=new Company();
+          company.setId(branchModel.getCompanyId());
+          branch.setCompany(company);
+
           Branch post = branchRepository.save(branch);
 
           BranchModel branchModel1 = new BranchModel();
           branchModel1.setId(post.getId());
           branchModel1.setBranchName(post.getBranchName());
           branchModel1.setBranchCode(post.getBranchCode());
+          branchModel.setCompanyId(post.getCompany().getId());
       return branchModel1;
       }
 //      READ
@@ -36,11 +42,14 @@ public class BranchService {
         Optional<Branch> branchOptional = branchRepository.findById(id);
         if(branchOptional.isPresent()) {
             Branch branch = branchOptional.get();
+            branchModel.setCompanyId(branch.getCompany().getId());
             branchModel.setId(branch.getId());
             branchModel.setBranchName(branch.getBranchName());
             branchModel.setBranchCode(branch.getBranchCode());
 
             CompanyModel companyModel = new CompanyModel();
+
+            companyModel.setId(branch.getCompany().getId());
             companyModel.setCompanyCode(branch.getCompany().getCompanyCode());
             companyModel.setCompanyName(branch.getCompany().getCompanyName());
             branchModel.setCompany(companyModel);

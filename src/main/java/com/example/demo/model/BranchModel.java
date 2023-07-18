@@ -11,5 +11,7 @@ public class BranchModel {
 
     private String branchCode;
 
+    private  long companyId;
+
     private CompanyModel company;
 }
