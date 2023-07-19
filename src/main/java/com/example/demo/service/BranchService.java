@@ -39,11 +39,11 @@ public class BranchService {
               branchModel1.setId(post.getId());
               branchModel1.setBranchName(post.getBranchName());
               branchModel1.setBranchCode(post.getBranchCode());
+              branchModel1.setCompanyId(post.getCompany().getId());
           } else {
               throw new Exception("Invalid id");
           }
           return branchModel1;
-
       }
 //      READ
     public BranchModel getBranch(Long id){

@@ -18,13 +18,25 @@ public class BranchController {
 
     @PostMapping(value = "/branch")
     public BaseResponse create (@RequestBody BranchModel branchModel) throws Exception {
-        BranchModel data = branchService.createBranch(branchModel);
         BaseResponse baseResponse = new BaseResponse();
-        baseResponse.setData(data);
-        baseResponse.setMessage("Success");
-        baseResponse.setCode(HttpStatus.OK);
-        return baseResponse;
+        try {
+            BranchModel data = branchService.createBranch(branchModel);
+            if (data != null) {
+                baseResponse.setData(data);
+                baseResponse.setMessage("Success");
+                baseResponse.setCode(HttpStatus.OK);
+            } else {
+                baseResponse.setMessage("Failure");
+                baseResponse.setCode(HttpStatus.BAD_REQUEST);
+            }
 
+            return baseResponse;
+        }catch (Exception e){
+            baseResponse.setMessage(e.getMessage());
+            baseResponse.setCode(HttpStatus.BAD_REQUEST);
+
+        }
+        return baseResponse;
     }
     @GetMapping("/branch/{id}")
     public BaseResponse getBranch (@PathVariable Long id) {
