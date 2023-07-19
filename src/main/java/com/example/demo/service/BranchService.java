@@ -64,6 +64,7 @@ public class BranchService {
         if(!branchList.isEmpty()){
             for (Branch branch: branchList ) {
                 BranchModel branchModel = new BranchModel();
+                branchModel.setCompanyId(branch.getCompany().getId());
                 branchModel.setId(branch.getId());
                 branchModel.setBranchName(branch.getBranchName());
                 branchModel.setBranchCode(branch.getBranchCode());
