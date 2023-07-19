@@ -17,7 +17,7 @@ public class BranchController {
     BranchService branchService;
 
     @PostMapping(value = "/branch")
-    public BaseResponse create (@RequestBody BranchModel branchModel){
+    public BaseResponse create (@RequestBody BranchModel branchModel) throws Exception {
         BranchModel data = branchService.createBranch(branchModel);
         BaseResponse baseResponse = new BaseResponse();
         baseResponse.setData(data);
@@ -69,11 +69,13 @@ public class BranchController {
         return baseResponse;
     }
     @DeleteMapping(value = "/branch/{id}")
-    public void deleteBranch(@PathVariable(value = "id") Long id){
+    public BaseResponse deleteBranch(@PathVariable(value = "id") Long id){
         BaseResponse baseResponse = new BaseResponse();
+
         baseResponse.setMessage("Success");
         baseResponse.setCode(HttpStatus.OK);
         branchService.deleteBranchId(id);
+        return baseResponse;
 
     }
 }

@@ -5,6 +5,7 @@ import com.example.demo.entity.Company;
 import com.example.demo.model.BranchModel;
 import com.example.demo.model.CompanyModel;
 import com.example.demo.repository.BranchRepository;
+import com.example.demo.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,24 +18,32 @@ public class BranchService {
     @Autowired
     BranchRepository branchRepository;
 
+    @Autowired
+    CompanyRepository companyRepository;
+
 //    CREATE
-      public BranchModel createBranch (BranchModel branchModel){
+      public BranchModel createBranch (BranchModel branchModel) throws Exception {
           Branch branch = new Branch();
           branch.setBranchName(branchModel.getBranchName());
           branch.setBranchCode(branchModel.getBranchCode());
 
-          Company company=new Company();
-          company.setId(branchModel.getCompanyId());
-          branch.setCompany(company);
+          Optional<Company> company = companyRepository.findById(branchModel.getCompanyId());
+          BranchModel branchModel1;
+          if (company.isPresent()) {
+              Company company1 = new Company();
+              company1.setId(branchModel.getCompanyId());
+              branch.setCompany(company1);
+              Branch post = branchRepository.save(branch);
 
-          Branch post = branchRepository.save(branch);
+              branchModel1 = new BranchModel();
+              branchModel1.setId(post.getId());
+              branchModel1.setBranchName(post.getBranchName());
+              branchModel1.setBranchCode(post.getBranchCode());
+          } else {
+              throw new Exception("Invalid id");
+          }
 
-          BranchModel branchModel1 = new BranchModel();
-          branchModel1.setId(post.getId());
-          branchModel1.setBranchName(post.getBranchName());
-          branchModel1.setBranchCode(post.getBranchCode());
-          branchModel.setCompanyId(post.getCompany().getId());
-      return branchModel1;
+          return branchModel1;
       }
 //      READ
     public BranchModel getBranch(Long id){
@@ -84,13 +93,18 @@ public class BranchService {
     }
 
 //    UPDATE
-    public BranchModel updateBranch (Long id , BranchModel branchDetails){
+    public BranchModel updateBranch (Long id , BranchModel branchModel){
           Branch branch = branchRepository.findById(id).get();
-          branch.setId(branchDetails.getId());
-          branch.setBranchName(branchDetails.getBranchName());
-          branch.setBranchCode(branchDetails.getBranchCode());
-          branchRepository.save(branch);
-          return branchDetails;
+          branch.setId(branchModel.getId());
+          branch.setBranchName(branchModel.getBranchName());
+          branch.setBranchCode(branchModel.getBranchCode());
+
+          Company company = branch.getCompany();
+          company.setId(branchModel.getCompanyId());
+          branch.setCompany(company);
+           branchRepository.save(branch);
+
+          return branchModel;
     }
 //    DELETE
     public void deleteBranchId (Long id){
