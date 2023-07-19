@@ -42,8 +42,8 @@ public class BranchService {
           } else {
               throw new Exception("Invalid id");
           }
-
           return branchModel1;
+
       }
 //      READ
     public BranchModel getBranch(Long id){

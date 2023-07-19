@@ -24,6 +24,7 @@ public class BranchController {
         baseResponse.setMessage("Success");
         baseResponse.setCode(HttpStatus.OK);
         return baseResponse;
+
     }
     @GetMapping("/branch/{id}")
     public BaseResponse getBranch (@PathVariable Long id) {
@@ -37,7 +38,6 @@ public class BranchController {
             baseResponse.setMessage("Wrong id");
             baseResponse.setCode(HttpStatus.BAD_REQUEST);
         }
-
         return baseResponse;
     }
     @GetMapping(value = "/branch")
