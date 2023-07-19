@@ -3,12 +3,15 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Entity
 @Data
 @Table(name = "company")
 public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Column(name = "id")
     private Long id;
 
@@ -17,7 +20,6 @@ public class Company {
 
     @Column(name = "company_code")
     private String companyCode;
-
 
 
 
