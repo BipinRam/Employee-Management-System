@@ -41,7 +41,7 @@ public class BranchService {
               branchModel1.setBranchCode(post.getBranchCode());
               branchModel1.setCompanyId(post.getCompany().getId());
           } else {
-              throw new Exception("Invalid id");
+              throw new Exception("Invalid company id");
           }
           return branchModel1;
       }
