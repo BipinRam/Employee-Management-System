@@ -20,6 +20,6 @@ public class Designation {
     private String designationCode;
 
     @ManyToOne
-    @JoinColumn(name = "company")
+    @JoinColumn(name = "company_id")
     private Company company;
 }

@@ -11,6 +11,8 @@ public class DesignationModel {
 
     private String designationCode;
 
+    private long companyId;
+
     private CompanyModel companyModel;
 
 
