@@ -23,5 +23,4 @@ public class Branch {
     private Company company;
 
 
-
 }

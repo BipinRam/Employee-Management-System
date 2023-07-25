@@ -73,11 +73,17 @@ public class CompanyController {
         return baseResponse;
     }
     @DeleteMapping(value = "/company/{id}")
-    public void deleteCompany(@PathVariable(value = "id") Long id){
+    public void deleteCompanyId (@PathVariable(value = "id") Long id)throws Exception{
         BaseResponse baseResponse = new BaseResponse();
-        baseResponse.setMessage("Success");
-        baseResponse.setCode(HttpStatus.OK);
-        comService.deleteCompanyId(id);
+        try{
+            baseResponse.setMessage("Success");
+            baseResponse.setCode(HttpStatus.OK);
+            comService.deleteCompanyId(id);
+        }catch(Exception exception){
+            baseResponse.setMessage(exception.getMessage());
+            baseResponse.setCode(HttpStatus.OK);
+        }
+
 
     }
 }

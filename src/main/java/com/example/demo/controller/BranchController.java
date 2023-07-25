@@ -91,7 +91,6 @@ public class BranchController {
             baseResponse.setMessage(exception.getMessage());
             baseResponse.setCode(HttpStatus.BAD_REQUEST);
         }
-
         return baseResponse;
     }
 }

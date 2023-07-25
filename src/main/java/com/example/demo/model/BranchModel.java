@@ -14,5 +14,4 @@ public class BranchModel {
     private  long companyId;
 
     private CompanyModel company;
-
 }

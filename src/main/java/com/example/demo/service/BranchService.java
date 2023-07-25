@@ -1,5 +1,4 @@
 package com.example.demo.service;
-
 import com.example.demo.entity.Branch;
 import com.example.demo.entity.Company;
 import com.example.demo.model.BranchModel;

@@ -71,11 +71,14 @@ public class CompanyService {
         return companyDetails;
     }
 //    DELETE
-    public void deleteCompanyId (Long id){
-        companyRepository.deleteById(id);
+    public void deleteCompanyId (Long id)throws Exception{
+        Optional<Company> company = companyRepository.findById(id);
+        if (company.isPresent()){
+            companyRepository.deleteById(id);
+        }else{
+            throw new Exception("Invalid id");
+        }
     }
-
-
 }
 
 
