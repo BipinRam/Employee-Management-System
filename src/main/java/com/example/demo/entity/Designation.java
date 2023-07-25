@@ -22,4 +22,5 @@ public class Designation {
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company company;
+
 }

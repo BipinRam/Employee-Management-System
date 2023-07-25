@@ -15,5 +15,4 @@ public class DesignationModel {
 
     private CompanyModel company;
 
-
 }

@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.Designation;
 import com.example.demo.model.BaseResponse;
 import com.example.demo.model.DepartmentModel;
 import com.example.demo.model.DesignationModel;
