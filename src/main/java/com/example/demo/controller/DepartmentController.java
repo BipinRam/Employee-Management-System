@@ -55,7 +55,6 @@ public class DepartmentController {
 
         return baseResponse;
     }
-
     @GetMapping(value = "/department")
     public BaseResponse read (){
         BaseResponse baseResponse = new BaseResponse();

@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import com.example.demo.entity.Company;
 import com.example.demo.entity.Department;
-import com.example.demo.entity.Designation;
 import com.example.demo.model.CompanyModel;
 import com.example.demo.model.DepartmentModel;
 import com.example.demo.repository.CompanyRepository;

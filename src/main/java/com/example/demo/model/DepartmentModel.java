@@ -14,4 +14,5 @@ public class DepartmentModel {
     private long companyId;
 
     private CompanyModel company;
+
 }
