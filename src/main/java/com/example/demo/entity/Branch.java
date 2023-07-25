@@ -15,7 +15,6 @@ public class Branch {
     @Column(name = "branch_name")
     private String branchName;
 
-
     @Column(name = "branch_code")
     private String branchCode;
 
