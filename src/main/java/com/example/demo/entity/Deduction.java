@@ -5,18 +5,18 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "companyDeductions")
-public class CompanyDeduction {
+@Table(name = "deductions")
+public class Deduction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private long id;
 
     @Column(name = "PF")
-    private  int pfPercentage;
+    private  int providentFund;
 
     @Column(name = "ESI")
-    private  int esiPercentage;
+    private  int employeeStateFund;
 
     @ManyToOne
     @JoinColumn(name = "company_id")

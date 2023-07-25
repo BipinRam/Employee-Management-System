@@ -81,12 +81,17 @@ public class BranchController {
         return baseResponse;
     }
     @DeleteMapping(value = "/branch/{id}")
-    public BaseResponse deleteBranch(@PathVariable(value = "id") Long id){
+    public BaseResponse deleteBranch(@PathVariable(value = "id") Long id)throws Exception{
         BaseResponse baseResponse = new BaseResponse();
+        try{
+            baseResponse.setMessage("Success");
+            baseResponse.setCode(HttpStatus.OK);
+            branchService.deleteBranchId(id);
+        }catch(Exception exception){
+            baseResponse.setMessage(exception.getMessage());
+            baseResponse.setCode(HttpStatus.BAD_REQUEST);
+        }
 
-        baseResponse.setMessage("Success");
-        baseResponse.setCode(HttpStatus.OK);
-        branchService.deleteBranchId(id);
         return baseResponse;
 
     }

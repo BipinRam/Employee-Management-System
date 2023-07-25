@@ -29,22 +29,20 @@ public class DesignationService {
         designation.setDesignationCode(designationModel.getDesignationCode());
 
         Optional<Company> company = companyRepository.findById(designationModel.getCompanyId());
-        DesignationModel designationModel1;
         if (company.isPresent()) {
-            Company company1 = new Company();
-            company1.setId(designationModel.getId());
-            designation.setCompany(company1);
-            Designation designation1 = designationRepository.save(designation);
+            designation.setCompany(company.get());
+            designation = designationRepository.save(designation);
 
-            designationModel1 = new DesignationModel();
-            designationModel1.setId(designation1.getId());
-            designationModel1.setDesignationName(designation1.getDesignationName());
-            designationModel1.setDesignationCode(designation1.getDesignationCode());
-            designationModel1.setCompanyId(designation1.getCompany().getId());
+            designationModel.setId(designation.getId());
+            CompanyModel companyModel = new CompanyModel();
+            companyModel.setId(designation.getCompany().getId());
+            companyModel.setCompanyName(designation.getCompany().getCompanyName());
+            companyModel.setCompanyCode(designation.getCompany().getCompanyCode());
+            designationModel.setCompany(companyModel);
         } else {
             throw new Exception("Invalid_company_id");
         }
-        return designationModel1;
+        return designationModel;
     }
 //    READ
     public DesignationModel readDesignation (long id){
@@ -61,7 +59,7 @@ public class DesignationService {
             companyModel.setId(designation.getCompany() .getId());
             companyModel.setCompanyName(designation.getDesignationName());
             companyModel.setCompanyCode(designation.getDesignationCode());
-            designationModel.setCompanyModel(companyModel);
+            designationModel.setCompany(companyModel);
         }else{
             return null;
         }
@@ -84,7 +82,7 @@ public class DesignationService {
                 companyModel.setId(company.getId());
                 companyModel.setCompanyName(company.getCompanyName());
                 companyModel.setCompanyCode(company.getCompanyCode());
-                designationModel.setCompanyModel(companyModel);
+                designationModel.setCompany(companyModel);
                 designationModels.add(designationModel);
             }
         }else {
@@ -101,15 +99,26 @@ public class DesignationService {
         designation.setDesignationName(designationModel.getDesignationName());
         designation.setDesignationCode(designationModel.getDesignationCode());
 
-        Company company = designation.getCompany();
-        company.setId(designation.getId());
-        designation.setCompany(company);
-        designationRepository.save(designation);
+        Optional<Company> company = companyRepository.findById(designationModel.getCompanyId());
+        designation.setCompany(company.get());
+        designation = designationRepository.save(designation);
+        designationModel.setId(designation.getId());
+        CompanyModel companyModel = new CompanyModel();
+        companyModel.setId(designation.getCompany().getId());
+        companyModel.setCompanyName(designation.getCompany().getCompanyName());
+        companyModel.setCompanyCode(designation.getCompany().getCompanyCode());
+        designationModel.setCompany(companyModel);
+
         return designationModel;
     }
 
 //    DELETE
-    public void deleteDesignation (Long id){
-        designationRepository.deleteById(id);
+    public void deleteDesignation (Long id)throws Exception{
+        Optional<Designation> designation = designationRepository.findById(id);
+        if (designation.isPresent()){
+            designationRepository.deleteById(id);
+        }else {
+            throw new Exception("Invalid id");
+        }
     }
 }

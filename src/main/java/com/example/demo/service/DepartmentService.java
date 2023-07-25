@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.entity.Company;
 import com.example.demo.entity.Department;
+import com.example.demo.entity.Designation;
 import com.example.demo.model.CompanyModel;
 import com.example.demo.model.DepartmentModel;
 import com.example.demo.repository.CompanyRepository;
@@ -28,22 +29,21 @@ public class DepartmentService {
         department.setDepartmentCode(depModel.getDepartmentCode());
 
         Optional<Company> company =  companyRepository.findById(depModel.getCompanyId());
-        DepartmentModel departmentModel;
         if (company.isPresent()){
-            Company company1 = new Company();
-            company1.setId(depModel.getCompanyId());
-            department.setCompany(company1);
-            Department depart = depRepository.save(department);
+            department.setCompany(company.get());
+            depRepository.save(department);
 
-            departmentModel = new DepartmentModel();
-            departmentModel.setId(depart.getId());
-            departmentModel.setDepartmentName(depart.getDepartmentName());
-            departmentModel.setDepartmentCode(depart.getDepartmentCode());
-            departmentModel.setCompanyId(depart.getCompany().getId());
+             depModel.setId(department.getId());
+            CompanyModel companyModel = new CompanyModel();
+            companyModel.setId(department.getCompany().getId());
+            companyModel.setCompanyName(department.getCompany().getCompanyName());
+            companyModel.setCompanyCode(department.getCompany().getCompanyCode());
+            depModel.setCompany(companyModel);
+
         }else {
             throw new Exception("Invalid company id");
         }
-        return departmentModel;
+        return depModel;
     }
 //    READ
     public DepartmentModel readDepartment (long id){
@@ -60,7 +60,7 @@ public class DepartmentService {
             companyModel.setId(department.getCompany().getId());
             companyModel.setCompanyName(department.getCompany().getCompanyName());
             companyModel.setCompanyCode(department.getCompany().getCompanyCode());
-            departmentModel.setCompanyModel(companyModel);
+            departmentModel.setCompany(companyModel);
         }else{
             return null;
         }
@@ -83,7 +83,7 @@ public class DepartmentService {
                 companyModel.setId(company.getId());
                 companyModel.setCompanyName(company.getCompanyName());
                 companyModel.setCompanyCode(company.getCompanyCode());
-                departmentModel.setCompanyModel(companyModel);
+                departmentModel.setCompany(companyModel);
                 departmentModelList.add(departmentModel);
             }
         }else {
@@ -98,15 +98,28 @@ public class DepartmentService {
         department.setDepartmentName(departmentModel.getDepartmentName());
         department.setDepartmentCode(departmentModel.getDepartmentCode());
 
-        Company company = department.getCompany();
-        company.setId(departmentModel.getCompanyId());
-        department.setCompany(company);
+        Optional<Company> company = companyRepository.findById(departmentModel.getCompanyId());
+        department.setCompany(company.get());
         depRepository.save(department);
+
+        departmentModel.setId(department.getId());
+        CompanyModel companyModel = new CompanyModel();
+        companyModel.setId(department.getCompany().getId());
+        companyModel.setCompanyName(department.getCompany().getCompanyName());
+        companyModel.setCompanyCode(department.getCompany().getCompanyCode());
+        departmentModel.setCompany(companyModel);
+
         return departmentModel;
     }
 //    DELETE
-    public void deleteDepartment(Long id){
-        depRepository.deleteById(id);
+    public void deleteDepartment(Long id)throws Exception{
+        Optional<Department> department = depRepository.findById(id);
+        if (department.isPresent()){
+            depRepository.deleteById(id);
+        }else {
+            throw new Exception();
+        }
+
     }
 
 }

@@ -28,22 +28,20 @@ public class BranchService {
           branch.setBranchCode(branchModel.getBranchCode());
 
           Optional<Company> company = companyRepository.findById(branchModel.getCompanyId());
-          BranchModel branchModel1;
           if (company.isPresent()) {
-              Company company1 = new Company();
-              company1.setId(branchModel.getCompanyId());
-              branch.setCompany(company1);
-              Branch post = branchRepository.save(branch);
+              branch.setCompany(company.get());
+              branchRepository.save(branch);
 
-              branchModel1 = new BranchModel();
-              branchModel1.setId(post.getId());
-              branchModel1.setBranchName(post.getBranchName());
-              branchModel1.setBranchCode(post.getBranchCode());
-              branchModel1.setCompanyId(post.getCompany().getId());
+              branchModel.setId(branch.getId());
+              CompanyModel companyModel = new CompanyModel();
+              companyModel.setId(branch.getCompany().getId());
+              companyModel.setCompanyName(branch.getCompany().getCompanyName());
+              companyModel.setCompanyCode(branch.getCompany().getCompanyCode());
+              branchModel.setCompany(companyModel);
           } else {
               throw new Exception("Invalid company id");
           }
-          return branchModel1;
+          return branchModel;
       }
 //      READ
     public BranchModel getBranch(Long id){
@@ -99,16 +97,27 @@ public class BranchService {
           branch.setBranchName(branchModel.getBranchName());
           branch.setBranchCode(branchModel.getBranchCode());
 
-          Company company = branch.getCompany();
-          company.setId(branchModel.getCompanyId());
-          branch.setCompany(company);
-           branchRepository.save(branch);
+         Optional<Company> company = companyRepository.findById(branchModel.getId());
+         branch.setCompany(company.get());
+         branchRepository.save(branch);
+
+         branchModel.setId(branchModel.getId());
+         CompanyModel companyModel = new CompanyModel();
+         companyModel.setId(branch.getCompany().getId());
+         companyModel.setCompanyName(branch.getCompany().getCompanyName());
+         companyModel.setCompanyCode(branch.getCompany().getCompanyCode());
+         branchModel.setCompany(companyModel);
 
           return branchModel;
     }
 //    DELETE
-    public void deleteBranchId (Long id){
-          branchRepository.deleteById(id);
+    public void deleteBranchId (Long id)throws Exception{
+          Optional<Branch> branch = branchRepository.findById(id);
+          if (branch.isPresent()){
+              branchRepository.deleteById(id);
+          }else {
+              throw new Exception();
+          }
     }
 }
 

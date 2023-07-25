@@ -79,9 +79,15 @@ public class DesignationController {
     @DeleteMapping(value = "/designation/{id}")
     public BaseResponse delete(@PathVariable(value = "id") long id){
         BaseResponse baseResponse = new BaseResponse();
-        baseResponse.setMessage("Success");
-        baseResponse.setCode(HttpStatus.OK);
-        designationService.deleteDesignation(id);
+        try{
+            baseResponse.setMessage("Success");
+            baseResponse.setCode(HttpStatus.OK);
+            designationService.deleteDesignation(id);
+        }catch (Exception exception){
+            baseResponse.setMessage(exception.getMessage());
+            baseResponse.setCode(HttpStatus.BAD_REQUEST);
+        }
+
         return baseResponse;
     }
 }

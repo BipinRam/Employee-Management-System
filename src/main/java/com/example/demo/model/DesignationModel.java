@@ -13,7 +13,7 @@ public class DesignationModel {
 
     private long companyId;
 
-    private CompanyModel companyModel;
+    private CompanyModel company;
 
 
 }

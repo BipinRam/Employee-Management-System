@@ -81,11 +81,17 @@ public class DepartmentController {
         return baseResponse;
     }
     @DeleteMapping(value = "/department/{id}")
-    public BaseResponse delete(@PathVariable(value = "id") long id){
+    public BaseResponse delete(@PathVariable(value = "id") long id)throws Exception{
         BaseResponse baseResponse = new BaseResponse();
-        baseResponse.setMessage("Success");
-        baseResponse.setCode(HttpStatus.OK);
-        depService.deleteDepartment(id);
+        try {
+            baseResponse.setMessage("Success");
+            baseResponse.setCode(HttpStatus.OK);
+            depService.deleteDepartment(id);
+        }catch (Exception exception){
+            baseResponse.setMessage(exception.getMessage());
+            baseResponse.setCode(HttpStatus.BAD_REQUEST);
+        }
+
         return  baseResponse;
     }
 }

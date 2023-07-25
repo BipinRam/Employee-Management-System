@@ -3,13 +3,13 @@ package com.example.demo.model;
 import lombok.Data;
 
 @Data
-public class DepartmentModel {
+public class DeductionModel {
 
     private Long id;
 
-    private String departmentName;
+    private  int providentFund;
 
-    private String departmentCode;
+    private  int employeeStateFund;
 
     private long companyId;
 
