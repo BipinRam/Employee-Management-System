@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Employee;
+import com.example.demo.model.BaseResponse;
+import com.example.demo.model.EmployeeModel;
 import com.example.demo.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,49 +11,90 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/api")
 public class EmployeeController {
     @Autowired
     EmployeeService empService;
 
-    @GetMapping(value = "/health")
-    public ResponseEntity<String> health() {
-        return new ResponseEntity<>("OK", HttpStatus.OK);
-    }
-    @PostMapping( value="/employees")
-    public Employee createEmployee(@RequestBody Employee emp) {
-        return empService.createEmployee(emp);
-    }
-    @GetMapping(value="/employees")
-    public List<Employee> readEmployees() {
-        return empService.getEmployee();
-    }
+   @PostMapping(value = "/employee")
+    public BaseResponse create (@RequestBody EmployeeModel employeeModel) throws Exception{
+       EmployeeModel data = empService.createEmployee(employeeModel);
+       BaseResponse baseResponse = new BaseResponse();
+       try {
+           if (data != null){
+               baseResponse.setData(data);
+               baseResponse.setMessage("Success");
+               baseResponse.setCode(HttpStatus.OK);
+           }else {
+               baseResponse.setMessage("Failure");
+               baseResponse.setCode(HttpStatus.BAD_REQUEST);
+           }
+       }catch (Exception exception){
+           baseResponse.setMessage(exception.getMessage());
+           baseResponse.setCode(HttpStatus.BAD_REQUEST);
+       }
+       return baseResponse;
+   }
 
-    @GetMapping(value="/employees/{id}")
-    public Employee readEmployeePathVariable(@PathVariable Long id) {
-        return empService.getEmployee(id);
-    }
+   @GetMapping(value = "/employee/{id}")
+    public BaseResponse get (@PathVariable (value = "id") Long id){
+       EmployeeModel data = empService.getEmployeeId(id);
+       BaseResponse baseResponse = new BaseResponse();
+       if (data != null){
+           baseResponse.setData(data);
+           baseResponse.setMessage("Success");
+           baseResponse.setCode(HttpStatus.OK);
+       }else {
+           baseResponse.setMessage("Failure");
+           baseResponse.setCode(HttpStatus.BAD_REQUEST);
+       }
+       return baseResponse;
+   }
 
-    @GetMapping(value="/employee")
-    public Employee readEmployee(@RequestParam(required = false) Long id) {
-        if(id == null)
-            id = 2L;
-        return empService.getEmployee(id);
-    }
+   @GetMapping(value = "/employee")
+    public BaseResponse getAll (){
+       List<EmployeeModel> data = empService.getEmployee();
+       BaseResponse baseResponse = new BaseResponse();
+       if (data != null){
+           baseResponse.setData(data);
+           baseResponse.setMessage("Success");
+           baseResponse.setCode(HttpStatus.OK);
+       }else {
+           baseResponse.setMessage("Failure");
+           baseResponse.setCode(HttpStatus.BAD_REQUEST);
+       }
+       return baseResponse;
+   }
+   @PutMapping(value = "/employee/{id}")
+    public BaseResponse update (@PathVariable(value = "id")Long id , @RequestBody EmployeeModel employeeModel){
+       EmployeeModel data = empService.updateEmployee(id , employeeModel);
+       BaseResponse baseResponse = new BaseResponse();
+       if (data != null){
+           baseResponse.setData(data);
+           baseResponse.setMessage("Success");
+           baseResponse.setCode(HttpStatus.OK);
+       }else {
+           baseResponse.setMessage("Failure");
+           baseResponse.setCode(HttpStatus.BAD_REQUEST);
+       }
+       return baseResponse;
+   }
+   @DeleteMapping(value = "/employee/{id}")
+   public BaseResponse delete(@PathVariable(value = "id") long id)throws Exception{
+       BaseResponse baseResponse = new BaseResponse();
+       try {
+           baseResponse.setMessage("Success");
+           baseResponse.setCode(HttpStatus.OK);
+           empService.deleteEmployee(id);
+       }catch (Exception exception){
+           baseResponse.setMessage(exception.getMessage());
+           baseResponse.setCode(HttpStatus.BAD_REQUEST);
+       }
 
-    @PutMapping(value="/employees/{empId}")
-    public Employee readEmployee(@PathVariable(value = "empId") Long id, @RequestBody Employee empDetails) {
-        return empService.updateEmployee(id, empDetails);
-    }
-
-    @DeleteMapping(value="/employees/{empId}")
-    public void deleteEmployee(@PathVariable(value = "empId") Long id) {
-        empService.deleteEmployee(id);
-    }
-
-
+       return  baseResponse;
+   }
 }
 
 

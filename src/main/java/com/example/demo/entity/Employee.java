@@ -1,26 +1,39 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 @Entity
-@Getter
-@Setter
+@Data
 @Table(name = "employee")
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "emp_id")
-    private long id;
+    @Column(name = "id")
+    private Long id;
 
-    @Column(name="first_name")
-    private String firstName;
+    @Column(name = "employee_full_name")
+    private String employeeFullName;
 
-    @Column(name="last_name")
-    private String lastName;
+    @Column(name = "mobile_number")
+    private String mobileNumber;
 
-    @Column(name="email_id")
-    private String emailId;
+    @Column(name = "email")
+    private  String email;
+
+    @Column(name = "blood_group")
+    private String bloodGroup;
+
+    @ManyToOne
+    @JoinColumn(name = "branch_id")
+    private Branch branch;
+
+    @ManyToOne
+    @JoinColumn(name = "department_id")
+    private Department department;
+
+    @ManyToOne
+    @JoinColumn(name = "designation_id")
+    private Designation designation;
 
 }
