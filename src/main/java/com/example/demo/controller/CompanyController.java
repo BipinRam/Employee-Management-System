@@ -47,15 +47,15 @@ public class CompanyController {
     @GetMapping(value = "/company")
     public BaseResponse readCompany(){
         BaseResponse baseResponse = new BaseResponse();
+        List<CompanyModel> data = comService.getCompanies();
 
-            List<CompanyModel> data = comService.getCompanies();
         if (data != null){
             baseResponse.setData(data);
             baseResponse.setMessage("Success");
             baseResponse.setCode(HttpStatus.OK);
 
         }else{
-            baseResponse.setData(null);
+//            baseResponse.setData(null);
             baseResponse.setMessage("Failure");
             baseResponse.setCode(HttpStatus.BAD_REQUEST);
 
@@ -73,11 +73,17 @@ public class CompanyController {
         return baseResponse;
     }
     @DeleteMapping(value = "/company/{id}")
-    public void deleteCompany(@PathVariable(value = "id") Long id){
+    public void deleteCompanyId (@PathVariable(value = "id") Long id)throws Exception{
         BaseResponse baseResponse = new BaseResponse();
-        baseResponse.setMessage("Success");
-        baseResponse.setCode(HttpStatus.OK);
-        comService.deleteCompanyId(id);
+        try{
+            baseResponse.setMessage("Success");
+            baseResponse.setCode(HttpStatus.OK);
+            comService.deleteCompanyId(id);
+        }catch(Exception exception){
+            baseResponse.setMessage(exception.getMessage());
+            baseResponse.setCode(HttpStatus.OK);
+        }
+
 
     }
 }

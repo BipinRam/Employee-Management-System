@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -19,7 +18,6 @@ public class CompanyService {
 //    CREATE
     public CompanyModel createCompany (CompanyModel com){
         Company comp = new Company();
-//        comp.setId(com.getId());
         comp.setCompanyName(com.getCompanyName());
         comp.setCompanyCode(com.getCompanyCode());
         Company saved = companyRepository.save(comp);
@@ -37,7 +35,9 @@ public class CompanyService {
         Optional<Company> compOpt = companyRepository.findById(id);
         if(compOpt.isPresent()) {
             Company comp = compOpt.get();
+            com.setId(comp.getId());
             com.setCompanyName(comp.getCompanyName());
+            com.setCompanyCode(comp.getCompanyCode());
         } else {
             return null;
         }
@@ -54,6 +54,8 @@ public class CompanyService {
                 model.setId(com.getId());
                 companies.add(model);
             }
+        }else{
+            return null;
         }
         return companies;
     }
@@ -69,11 +71,14 @@ public class CompanyService {
         return companyDetails;
     }
 //    DELETE
-    public void deleteCompanyId (Long id){
-        companyRepository.deleteById(id);
+    public void deleteCompanyId (Long id)throws Exception{
+        Optional<Company> company = companyRepository.findById(id);
+        if (company.isPresent()){
+            companyRepository.deleteById(id);
+        }else{
+            throw new Exception("Invalid id");
+        }
     }
-
-
 }
 
 
