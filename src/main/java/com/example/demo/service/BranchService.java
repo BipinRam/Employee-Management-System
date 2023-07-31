@@ -95,11 +95,11 @@ public class BranchService {
           branch.setBranchName(branchModel.getBranchName());
           branch.setBranchCode(branchModel.getBranchCode());
 
-         Optional<Company> company = companyRepository.findById(branchModel.getId());
+         Optional<Company> company = companyRepository.findById(branchModel.getCompanyId());
          branch.setCompany(company.get());
          branchRepository.save(branch);
 
-         branchModel.setId(branchModel.getId());
+         branchModel.setId(branch.getId());
          CompanyModel companyModel = new CompanyModel();
          companyModel.setId(branch.getCompany().getId());
          companyModel.setCompanyName(branch.getCompany().getCompanyName());
