@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.model.BaseResponse;
 import com.example.demo.model.SalaryModel;
-import com.example.demo.model.SearchModel;
 import com.example.demo.service.SalaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -68,8 +67,8 @@ public class SalaryController {
     }
 
     @GetMapping(value = "/search")
-    public BaseResponse getSearch  (@PathVariable long id){
-        SearchModel data = salaryService.getSearch(id);
+    public BaseResponse getSearch  (@RequestBody SalaryModel salaryModel){
+        SalaryModel data = salaryService.getSearch(salaryModel);
         BaseResponse baseResponse = new BaseResponse();
         if (data != null){
             baseResponse.setData(data);

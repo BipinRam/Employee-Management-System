@@ -4,5 +4,5 @@ import com.example.demo.entity.Salary;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SalaryRepository extends JpaRepository<Salary , Long> {
-    Salary findByEmployeeId (Long employeeId);
+    Salary findByEmployeeIdAndMonthAndYear (Long employeeId , String Month , int year);
 }

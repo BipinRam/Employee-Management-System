@@ -5,7 +5,6 @@ import com.example.demo.model.*;
 import com.example.demo.repository.DeductionRepository;
 import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.repository.SalaryRepository;
-import jakarta.persistence.Basic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -129,21 +128,25 @@ public class SalaryService {
     }
 
 //    READ SEARCH
-      public SearchModel getSearch (long id){
-       SearchModel searchModel = new SearchModel();
-//       Optional<Salary> salaryOptional = salaryRepository.findById(id);
-////       Employee emplo = salaryRepository.findByEmployeeId(salaryOptional.get().getId());
-////       if (salaryOptional.isPresent()|| employeeOptional.isPresent()){
-//           Salary salary = salaryOptional.get();
-//           searchModel.setId(salary.getId());
-//           searchModel.setMonth(salary.getMonth());
-//           searchModel.setYear(salary.getYear());
-//           searchModel.setEmployeeId(salary.getEmployee().getId());
-//           searchModel.setNetSalary(salary.getNetSalary());
-//       }else {
-//           return  null;
-//       }
-       return searchModel;
+      public SalaryModel getSearch (SalaryModel salaryModel ){
+
+        Salary salary = salaryRepository.findByEmployeeIdAndMonthAndYear(salaryModel.getEmployeeId(), salaryModel.getMonth(), salaryModel.getYear());
+          Optional<Employee> employeeOptional = employeeRepository.findById(salaryModel.getEmployeeId());
+        if (employeeOptional.isPresent()){
+            Employee employee = employeeOptional.get();
+            salaryModel.setId(employee.getId());
+
+//            SalaryModel salaryModel1 = new SalaryModel();
+            salaryModel.setMonth(salary.getMonth());
+            salaryModel.setYear(salary.getYear());
+            salaryModel.setNetSalary(salary.getNetSalary());
+
+
+
+          }else {
+              return null;
+          }
+          return salaryModel;
       }
 
 //    UPDATE
