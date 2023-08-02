@@ -20,9 +20,9 @@ public class EmployeeController {
 
    @PostMapping(value = "/employee")
     public BaseResponse create (@RequestBody EmployeeModel employeeModel) throws Exception{
-       EmployeeModel data = empService.createEmployee(employeeModel);
        BaseResponse baseResponse = new BaseResponse();
        try {
+           EmployeeModel data = empService.createEmployee(employeeModel);
            if (data != null){
                baseResponse.setData(data);
                baseResponse.setMessage("Success");
@@ -68,17 +68,23 @@ public class EmployeeController {
        return baseResponse;
    }
    @PutMapping(value = "/employee/{id}")
-    public BaseResponse update (@PathVariable(value = "id")Long id , @RequestBody EmployeeModel employeeModel){
+    public BaseResponse update (@PathVariable(value = "id")Long id , @RequestBody EmployeeModel employeeModel)throws Exception{
        EmployeeModel data = empService.updateEmployee(id , employeeModel);
        BaseResponse baseResponse = new BaseResponse();
-       if (data != null){
-           baseResponse.setData(data);
-           baseResponse.setMessage("Success");
-           baseResponse.setCode(HttpStatus.OK);
-       }else {
-           baseResponse.setMessage("Failure");
+       try{
+           if (data != null){
+               baseResponse.setData(data);
+               baseResponse.setMessage("Success");
+               baseResponse.setCode(HttpStatus.OK);
+           }else {
+               baseResponse.setMessage("Failure");
+               baseResponse.setCode(HttpStatus.BAD_REQUEST);
+           }
+       }catch (Exception exception){
+           baseResponse.setMessage(exception.getMessage());
            baseResponse.setCode(HttpStatus.BAD_REQUEST);
        }
+
        return baseResponse;
    }
    @DeleteMapping(value = "/employee/{id}")

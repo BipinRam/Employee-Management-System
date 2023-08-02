@@ -17,13 +17,10 @@ import java.util.Optional;
 public class EmployeeService {
     @Autowired
     EmployeeRepository empRepository;
-
     @Autowired
     BranchRepository branchRepository;
-
     @Autowired
     DepartmentRepository departmentRepository;
-
     @Autowired
     DesignationRepository designationRepository;
 
@@ -34,16 +31,16 @@ public class EmployeeService {
        employee.setMobileNumber(employeeModel.getMobileNumber());
        employee.setEmail(employeeModel.getEmail());
        employee.setBloodGroup(employeeModel.getBloodGroup());
+       empRepository.save(employee);
 
        Optional<Branch> branch = branchRepository.findById(employeeModel.getBranchId());
        Optional<Department> department = departmentRepository.findById(employeeModel.getDepartmentId());
        Optional<Designation> designation = designationRepository.findById(employeeModel.getDesignationID());
 
-       if (branch.isPresent()|| department.isPresent()|| designation.isPresent()){
+       if (branch.isPresent() && department.isPresent() && designation.isPresent()){
            employee.setBranch(branch.get());
            employee.setDepartment(department.get());
            employee.setDesignation(designation.get());
-           empRepository.save(employee);
 
            employeeModel.setId(employee.getId());
            BranchModel branchModel = new BranchModel();
@@ -63,6 +60,7 @@ public class EmployeeService {
            designationModel.setDesignationName(employee.getDesignation().getDesignationName());
            designationModel.setDesignationCode(employee.getDesignation().getDesignationCode());
            employeeModel.setDesignation(designationModel);
+
        }else {
            throw  new Exception("Invalid branch/department/designation id");
        }
@@ -149,43 +147,44 @@ public class EmployeeService {
        return employeeModelList;
     }
 //    UPDATE
-    public EmployeeModel updateEmployee (Long id , EmployeeModel employeeModel){
+    public EmployeeModel updateEmployee (Long id , EmployeeModel employeeModel)throws Exception{
        Employee employee = empRepository.findById(id).get();
-       employee.setId(employeeModel.getId());
-       employee.setEmployeeFullName(employeeModel.getEmployeeFullName());
-       employee.setMobileNumber(employeeModel.getMobileNumber());
-       employee.setEmail(employeeModel.getEmail());
-       employee.setBloodGroup(employeeModel.getBloodGroup());
+        employee.setEmployeeFullName(employeeModel.getEmployeeFullName());
+        employee.setMobileNumber(employeeModel.getMobileNumber());
+        employee.setEmail(employeeModel.getEmail());
+        employee.setBloodGroup(employeeModel.getBloodGroup());
 
-       Optional<Branch> branch = branchRepository.findById(employeeModel.getBranchId());
-       employee.setBranch(branch.get());
-       Optional<Department> department = departmentRepository.findById(employeeModel.getDepartmentId());
-       employee.setDepartment(department.get());
-       Optional<Designation> designation = designationRepository.findById(employeeModel.getDesignationID());
-       employee.setDesignation(designation.get());
+        Optional<Branch> branch = branchRepository.findById(employeeModel.getBranchId());
+        Optional<Department> department = departmentRepository.findById(employeeModel.getDepartmentId());
+        Optional<Designation> designation = designationRepository.findById(employeeModel.getDesignationID());
 
-       empRepository.save(employee);
+        if (branch.isPresent()|| department.isPresent()|| designation.isPresent()){
+            employee.setBranch(branch.get());
+            employee.setDepartment(department.get());
+            employee.setDesignation(designation.get());
+            empRepository.save(employee);
 
-        employeeModel.setId(employee.getId());
+            employeeModel.setId(employee.getId());
+            BranchModel branchModel = new BranchModel();
+            branchModel.setId(employee.getBranch().getId());
+            branchModel.setBranchName(employee.getBranch().getBranchName());
+            branchModel.setBranchCode(employee.getBranch().getBranchCode());
+            employeeModel.setBranch(branchModel);
 
-        BranchModel branchModel = new BranchModel();
-        branchModel.setId(employee.getBranch().getId());
-        branchModel.setBranchName(employee.getBranch().getBranchName());
-        branchModel.setBranchCode(employee.getBranch().getBranchCode());
-        employeeModel.setBranch(branchModel);
+            DepartmentModel departmentModel = new DepartmentModel();
+            departmentModel.setId(employee.getDepartment().getId());
+            departmentModel.setDepartmentName(employee.getDepartment().getDepartmentName());
+            departmentModel.setDepartmentCode(employee.getDepartment().getDepartmentCode());
+            employeeModel.setDepartment(departmentModel);
 
-        DepartmentModel departmentModel = new DepartmentModel();
-        departmentModel.setId(employee.getDepartment().getId());
-        departmentModel.setDepartmentName(employee.getDepartment().getDepartmentName());
-        departmentModel.setDepartmentCode(employee.getDepartment().getDepartmentCode());
-        employeeModel.setDepartment(departmentModel);
-
-        DesignationModel designationModel = new DesignationModel();
-        designationModel.setId(employee.getDesignation().getId());
-        designationModel.setDesignationName(employee.getDesignation().getDesignationName());
-        designationModel.setDesignationCode(employee.getDesignation().getDesignationCode());
-        employeeModel.setDesignation(designationModel);
-
+            DesignationModel designationModel = new DesignationModel();
+            designationModel.setId(employee.getDesignation().getId());
+            designationModel.setDesignationName(employee.getDesignation().getDesignationName());
+            designationModel.setDesignationCode(employee.getDesignation().getDesignationCode());
+            employeeModel.setDesignation(designationModel);
+        }else {
+            throw  new Exception("Invalid branch/department/designation id");
+        }
         return employeeModel;
 
     }
