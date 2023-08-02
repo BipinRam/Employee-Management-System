@@ -1,8 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.BaseResponse;
-import com.example.demo.model.SalaryModel;
-import com.example.demo.service.SalaryService;
+import com.example.demo.model.PaymentModel;
+import com.example.demo.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -10,16 +10,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-public class SalaryController {
+public class PaymentController {
 
     @Autowired
-    SalaryService salaryService;
+    PaymentService paymentService;
 
     @PostMapping(value = "/salary")
-    public BaseResponse create(@RequestBody SalaryModel salaryModel) throws Exception {
+    public BaseResponse create(@RequestBody PaymentModel paymentModel) throws Exception {
         BaseResponse baseResponse = new BaseResponse();
         try {
-            SalaryModel data = salaryService.createSalary(salaryModel);
+            PaymentModel data = paymentService.createPayment(paymentModel);
             if (data != null) {
                 baseResponse.setData(data);
                 baseResponse.setMessage("Success");
@@ -38,7 +38,7 @@ public class SalaryController {
 
     @GetMapping(value = "/salary/{id}")
     public BaseResponse get  (@PathVariable long id){
-        SalaryModel data = salaryService.readSalaryId(id);
+        PaymentModel data = paymentService.readPaymentId(id);
         BaseResponse baseResponse = new BaseResponse();
         if (data != null){
             baseResponse.setData(data);
@@ -53,7 +53,7 @@ public class SalaryController {
     }
     @GetMapping(value = "/salary")
     public BaseResponse getAll (){
-        List<SalaryModel> data = salaryService.getSalary();
+        List<PaymentModel> data = paymentService.getPayment();
         BaseResponse baseResponse = new BaseResponse();
         if (data != null){
             baseResponse.setData(data);
@@ -67,8 +67,8 @@ public class SalaryController {
     }
 
     @GetMapping(value = "/search")
-    public BaseResponse getSearch  (@RequestBody SalaryModel salaryModel){
-        SalaryModel data = salaryService.getSearch(salaryModel);
+    public BaseResponse getSearch  (@RequestBody PaymentModel paymentModel){
+        PaymentModel data = paymentService.getSearch(paymentModel);
         BaseResponse baseResponse = new BaseResponse();
         if (data != null){
             baseResponse.setData(data);
@@ -83,13 +83,23 @@ public class SalaryController {
     }
 
     @PutMapping(value = "/salary/{id}")
-    public BaseResponse update (@PathVariable (value = "id") long id , @RequestBody SalaryModel salaryModel){
-        SalaryModel data = salaryService.updateSalary(id , salaryModel);
+    public BaseResponse update (@PathVariable (value = "id") long id , @RequestBody PaymentModel paymentModel)throws Exception{
         BaseResponse baseResponse = new BaseResponse();
-        baseResponse.setMessage("Success");
-        baseResponse.setData(data);
-        baseResponse.setCode(HttpStatus.OK);
-
+        try {
+            PaymentModel data = paymentService.updatePayment(id , paymentModel);
+            if (data != null) {
+                baseResponse.setData(data);
+                baseResponse.setMessage("Success");
+                baseResponse.setCode(HttpStatus.OK);
+            } else {
+                baseResponse.setMessage("Failure");
+                baseResponse.setCode(HttpStatus.BAD_REQUEST);
+            }
+            return baseResponse;
+        } catch (Exception exception) {
+            baseResponse.setMessage(exception.getMessage());
+            baseResponse.setCode(HttpStatus.BAD_REQUEST);
+        }
         return baseResponse;
     }
 
@@ -97,9 +107,9 @@ public class SalaryController {
     public BaseResponse delete (@PathVariable(value = "id")long id){
         BaseResponse baseResponse = new BaseResponse();
         try {
-            baseResponse.setMessage("Success");
+            baseResponse.setMessage("Deleted");
             baseResponse.setCode(HttpStatus.OK);
-            salaryService.deleteSalaryId(id);
+            paymentService.deletePaymentId(id);
         }catch(Exception exception){
             baseResponse.setMessage(exception.getMessage());
             baseResponse.setCode(HttpStatus.BAD_REQUEST);

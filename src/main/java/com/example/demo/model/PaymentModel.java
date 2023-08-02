@@ -3,7 +3,7 @@ package com.example.demo.model;
 import lombok.Data;
 
 @Data
-public class SalaryModel {
+public class PaymentModel {
 
     private Long id;
 
@@ -11,21 +11,16 @@ public class SalaryModel {
 
     private int year;
 
-    private  int basic;
+    private int netPay;
 
-    private int dearnessAllowance;
-
-    private int houseRentAllowance;
-
-    private int otherAdditions;
-
-    private int netSalary;
-
-    private long employeeId;
+    private Long employeeId;
     private EmployeeModel employee;
 
     private Long deductionId;
     private DeductionModel deduction;
+
+    private Long employeeSalaryId;
+    private EmployeeSalaryModel employeeSalaryModel;
 
 
 }

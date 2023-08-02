@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "Salary")
-public class Salary {
+@Table(name = "Payment")
+public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
@@ -19,22 +19,8 @@ public class Salary {
     @Column(name = "year")
     private int year;
 
-    @Column(name = "basic")
-    private  int basic;
-
-//DA - Dearness Allowance
-    @Column(name = "dearness_Allowance")
-    private int dearnessAllowance;
-//HRA - House Rent Allowance
-    @Column(name ="House_Rent_Allowance" )
-    private int houseRentAllowance;
-
-    @Column(name = "other_Additions")
-    private int otherAdditions;
-
-
-    @Column(name = "net_Salary")
-    private int netSalary;
+    @Column(name = "net_Pay")
+    private int netPay;
 
     @ManyToOne
     @JoinColumn(name = "employee_id")
@@ -44,5 +30,8 @@ public class Salary {
     @JoinColumn(name = "deduction_id")
     private Deduction deduction;
 
+    @ManyToOne
+    @JoinColumn(name = "employeeSalary_id")
+    private  EmployeeSalary employeeSalary;
 
 }
