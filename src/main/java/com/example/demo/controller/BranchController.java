@@ -29,14 +29,13 @@ public class BranchController {
                 baseResponse.setMessage("Failure");
                 baseResponse.setCode(HttpStatus.BAD_REQUEST);
             }
-
             return baseResponse;
         }catch (Exception e){
             baseResponse.setMessage(e.getMessage());
             baseResponse.setCode(HttpStatus.BAD_REQUEST);
+            return baseResponse;
 
         }
-        return baseResponse;
     }
     @GetMapping("/branch/{id}")
     public BaseResponse getBranch (@PathVariable Long id) {
@@ -71,14 +70,25 @@ public class BranchController {
         return baseResponse;
     }
     @PutMapping(value = "/branch/{id}")
-    public BaseResponse updateBranch(@PathVariable (value = "id")Long id , @RequestBody BranchModel companyDetails){
+    public BaseResponse updateBranch(@PathVariable (value = "id")Long id , @RequestBody BranchModel companyDetails)throws Exception{
 
-        BranchModel data = branchService.updateBranch(id , companyDetails);
         BaseResponse baseResponse = new BaseResponse();
-        baseResponse.setData(data);
-        baseResponse.setMessage("Success");
-        baseResponse.setCode(HttpStatus.OK);
-        return baseResponse;
+        try {
+            BranchModel data = branchService.updateBranch(id , companyDetails);
+            if (data != null){
+                baseResponse.setData(data);
+                baseResponse.setMessage("Success");
+                baseResponse.setCode(HttpStatus.OK);
+            }else {
+                baseResponse.setMessage("Success");
+                baseResponse.setCode(HttpStatus.BAD_REQUEST);
+            }
+            return baseResponse;
+        }catch (Exception exception){
+            baseResponse.setMessage(exception.getMessage());
+            baseResponse.setCode(HttpStatus.BAD_REQUEST);
+            return baseResponse;
+        }
     }
     @DeleteMapping(value = "/branch/{id}")
     public BaseResponse deleteBranch(@PathVariable(value = "id") Long id)throws Exception{

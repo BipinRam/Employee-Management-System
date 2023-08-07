@@ -30,15 +30,16 @@ public class PaymentService {
         payment.setId(paymentModel.getId());
         payment.setMonth(paymentModel.getMonth());
         payment.setYear(paymentModel.getYear());
-        paymentRepository.save(payment);
 
         Optional<Deduction> deductionOptional = deductionRepository.findById(paymentModel.getDeductionId());
         Optional<Employee> employeeOptional =  employeeRepository.findById(paymentModel.getEmployeeId());
         Optional<EmployeeSalary> empSalOptional = empSalRepository.findById(paymentModel.getEmployeeId());
-        if (deductionOptional.isPresent()|| employeeOptional.isPresent()||empSalOptional.isPresent()){
+        if (deductionOptional.isPresent() && employeeOptional.isPresent() && empSalOptional.isPresent()){
             payment.setDeduction(deductionOptional.get());
             payment.setEmployee(employeeOptional.get());
             payment.setEmployeeSalary(empSalOptional.get());
+
+            paymentRepository.save(payment);
 
 //            Deduction
             int employeeStateFund = payment.getDeduction().getEmployeeStateFund();
@@ -56,7 +57,6 @@ public class PaymentService {
             int totalDeduction = esiDeduction + pfDeduction;
             int netPay = totalSalary - totalDeduction;
             payment.setNetPay(netPay);
-
 
         }else{
             throw new Exception("Invalid deduction / employee id");
@@ -168,15 +168,16 @@ public class PaymentService {
         payment.setId(paymentModel.getId());
         payment.setMonth(paymentModel.getMonth());
         payment.setYear(paymentModel.getYear());
-        paymentRepository.save(payment);
 
         Optional<Deduction> deductionOptional = deductionRepository.findById(paymentModel.getDeductionId());
         Optional<Employee> employeeOptional =  employeeRepository.findById(paymentModel.getEmployeeId());
         Optional<EmployeeSalary> empSalOptional = empSalRepository.findById(paymentModel.getEmployeeId());
-        if (deductionOptional.isPresent()|| employeeOptional.isPresent()||empSalOptional.isPresent()){
+        if (deductionOptional.isPresent() && employeeOptional.isPresent() && empSalOptional.isPresent()){
             payment.setDeduction(deductionOptional.get());
             payment.setEmployee(employeeOptional.get());
             payment.setEmployeeSalary(empSalOptional.get());
+
+            paymentRepository.save(payment);
 
 //            Deduction
             int employeeStateFund = payment.getDeduction().getEmployeeStateFund();

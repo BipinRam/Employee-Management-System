@@ -89,24 +89,26 @@ public class BranchService {
     }
 
 //    UPDATE
-    public BranchModel updateBranch (Long id , BranchModel branchModel){
+    public BranchModel updateBranch (Long id , BranchModel branchModel)throws Exception{
           Branch branch = branchRepository.findById(id).get();
-          branch.setId(branchModel.getId());
           branch.setBranchName(branchModel.getBranchName());
           branch.setBranchCode(branchModel.getBranchCode());
 
          Optional<Company> company = companyRepository.findById(branchModel.getCompanyId());
-         branch.setCompany(company.get());
-         branchRepository.save(branch);
+         if (company.isPresent()){
+             branch.setCompany(company.get());
+             branchRepository.save(branch);
 
-         branchModel.setId(branch.getId());
-         CompanyModel companyModel = new CompanyModel();
-         companyModel.setId(branch.getCompany().getId());
-         companyModel.setCompanyName(branch.getCompany().getCompanyName());
-         companyModel.setCompanyCode(branch.getCompany().getCompanyCode());
-         branchModel.setCompany(companyModel);
-
-          return branchModel;
+             branchModel.setId(branch.getId());
+             CompanyModel companyModel = new CompanyModel();
+             companyModel.setId(branch.getCompany().getId());
+             companyModel.setCompanyName(branch.getCompany().getCompanyName());
+             companyModel.setCompanyCode(branch.getCompany().getCompanyCode());
+             branchModel.setCompany(companyModel);
+         }else {
+             throw new Exception("Invalid company id");
+         }
+        return branchModel;
     }
 //    DELETE
     public void deleteBranchId (Long id)throws Exception{

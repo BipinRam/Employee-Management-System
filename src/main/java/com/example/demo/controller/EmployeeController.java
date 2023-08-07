@@ -69,9 +69,10 @@ public class EmployeeController {
    }
    @PutMapping(value = "/employee/{id}")
     public BaseResponse update (@PathVariable(value = "id")Long id , @RequestBody EmployeeModel employeeModel)throws Exception{
-       EmployeeModel data = empService.updateEmployee(id , employeeModel);
+
        BaseResponse baseResponse = new BaseResponse();
        try{
+           EmployeeModel data = empService.updateEmployee(id , employeeModel);
            if (data != null){
                baseResponse.setData(data);
                baseResponse.setMessage("Success");
@@ -91,16 +92,16 @@ public class EmployeeController {
    public BaseResponse delete(@PathVariable(value = "id") long id)throws Exception{
        BaseResponse baseResponse = new BaseResponse();
        try {
+           empService.deleteEmployeeId(id);
            baseResponse.setMessage("Success");
            baseResponse.setCode(HttpStatus.OK);
-           empService.deleteEmployee(id);
        }catch (Exception exception){
            baseResponse.setMessage(exception.getMessage());
            baseResponse.setCode(HttpStatus.BAD_REQUEST);
        }
-
        return  baseResponse;
    }
+
 }
 
 

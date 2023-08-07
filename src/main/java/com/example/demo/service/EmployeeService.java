@@ -1,5 +1,4 @@
 package com.example.demo.service;
-
 import com.example.demo.entity.*;
 import com.example.demo.model.*;
 import com.example.demo.repository.BranchRepository;
@@ -8,7 +7,6 @@ import com.example.demo.repository.DesignationRepository;
 import com.example.demo.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +29,6 @@ public class EmployeeService {
        employee.setMobileNumber(employeeModel.getMobileNumber());
        employee.setEmail(employeeModel.getEmail());
        employee.setBloodGroup(employeeModel.getBloodGroup());
-       empRepository.save(employee);
 
        Optional<Branch> branch = branchRepository.findById(employeeModel.getBranchId());
        Optional<Department> department = departmentRepository.findById(employeeModel.getDepartmentId());
@@ -42,7 +39,10 @@ public class EmployeeService {
            employee.setDepartment(department.get());
            employee.setDesignation(designation.get());
 
+           empRepository.save(employee);
+
            employeeModel.setId(employee.getId());
+
            BranchModel branchModel = new BranchModel();
            branchModel.setId(employee.getBranch().getId());
            branchModel.setBranchName(employee.getBranch().getBranchName());
@@ -114,10 +114,6 @@ public class EmployeeService {
                employeeModel.setEmail(employee.getEmail());
                employeeModel.setBloodGroup(employee.getBloodGroup());
 
-               employeeModel.setBranchId(employee.getBranch().getId());
-               employeeModel.setDepartmentId(employee.getDepartment().getId());
-               employeeModel.setDesignationID(employee.getDesignation().getId());
-
               Branch branch = employee.getBranch();
               BranchModel branchModel = new BranchModel();
               branchModel.setId(branch.getId());
@@ -125,14 +121,12 @@ public class EmployeeService {
               branchModel.setBranchCode(branch.getBranchCode());
               employeeModel.setBranch(branchModel);
 
-
               Department department = employee.getDepartment();
               DepartmentModel departmentModel = new DepartmentModel();
               departmentModel.setId(department.getId());
               departmentModel.setDepartmentName(department.getDepartmentName());
               departmentModel.setDepartmentCode(department.getDepartmentCode());
               employeeModel.setDepartment(departmentModel);
-
 
               Designation designation = employee.getDesignation();
               DesignationModel designationModel = new DesignationModel();
@@ -143,6 +137,8 @@ public class EmployeeService {
 
               employeeModelList.add(employeeModel);
            }
+       }else {
+           return null;
        }
        return employeeModelList;
     }
@@ -158,7 +154,7 @@ public class EmployeeService {
         Optional<Department> department = departmentRepository.findById(employeeModel.getDepartmentId());
         Optional<Designation> designation = designationRepository.findById(employeeModel.getDesignationID());
 
-        if (branch.isPresent()|| department.isPresent()|| designation.isPresent()){
+        if (branch.isPresent() && department.isPresent() && designation.isPresent()){
             employee.setBranch(branch.get());
             employee.setDepartment(department.get());
             employee.setDesignation(designation.get());
@@ -189,7 +185,7 @@ public class EmployeeService {
 
     }
 //    DELETE
-    public void deleteEmployee (Long id) throws  Exception{
+    public void deleteEmployeeId(Long id) throws  Exception{
        Optional<Employee> employeeOptional = empRepository.findById(id);
        if (employeeOptional.isPresent()){
            empRepository.deleteById(id);
@@ -197,6 +193,5 @@ public class EmployeeService {
            throw new Exception("Invalid id");
        }
     }
-
 
 }
