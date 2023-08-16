@@ -1,13 +1,9 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.Company;
 import com.example.demo.model.BaseResponse;
 import com.example.demo.model.CompanyModel;
 import com.example.demo.service.CompanyService;
-import jakarta.validation.constraints.Null;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -73,7 +69,7 @@ public class CompanyController {
         return baseResponse;
     }
     @DeleteMapping(value = "/company/{id}")
-    public void deleteCompanyId (@PathVariable(value = "id") Long id)throws Exception{
+    public BaseResponse deleteCompanyId (@PathVariable(value = "id") Long id)throws Exception{
         BaseResponse baseResponse = new BaseResponse();
         try{
             baseResponse.setMessage("Success");
@@ -81,9 +77,9 @@ public class CompanyController {
             comService.deleteCompanyId(id);
         }catch(Exception exception){
             baseResponse.setMessage(exception.getMessage());
-            baseResponse.setCode(HttpStatus.OK);
+            baseResponse.setCode(HttpStatus.BAD_REQUEST);
         }
-
+        return baseResponse;
 
     }
 }

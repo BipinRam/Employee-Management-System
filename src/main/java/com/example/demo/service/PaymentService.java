@@ -211,7 +211,7 @@ public class PaymentService {
         if (payment.isPresent()){
             paymentRepository.deleteById(id);
         }else {
-            throw new Exception();
+            throw new Exception("Invalid id");
         }
     }
 }

@@ -128,7 +128,7 @@ public class EmployeeSalaryService {
         if (employeeSalary.isPresent()){
             empSalRepository.deleteById(id);
         }else {
-            throw new Exception();
+            throw new Exception("Invalid id");
         }
 
     }

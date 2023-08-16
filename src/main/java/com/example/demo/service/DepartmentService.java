@@ -116,7 +116,7 @@ public class DepartmentService {
         if (department.isPresent()){
             depRepository.deleteById(id);
         }else {
-            throw new Exception();
+            throw new Exception("Invalid id");
         }
 
     }

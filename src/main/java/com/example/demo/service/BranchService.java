@@ -116,7 +116,7 @@ public class BranchService {
           if (branch.isPresent()){
               branchRepository.deleteById(id);
           }else {
-              throw new Exception();
+              throw new Exception("Invalid id");
           }
     }
 }
