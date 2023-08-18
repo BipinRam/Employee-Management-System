@@ -1,5 +1,6 @@
 package com.example.demo.token;
 
+import cn.hutool.http.HttpStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +19,11 @@ public class AuthenticationController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<JwtAuthenticationResponse> signin(@RequestBody SignInRequest request) {
-        return ResponseEntity.ok(authenticationService.signIn(request));
+    public ResponseEntity<JwtAuthenticationResponse> signin(@RequestBody SignInRequest request)  {
+        try{
+            return ResponseEntity.ok(authenticationService.signIn(request));
+        }catch (IllegalArgumentException exception){
+            return ResponseEntity.status(HttpStatus.HTTP_FORBIDDEN).body(new JwtAuthenticationResponse(exception.getMessage()));
+        }
     }
 }
