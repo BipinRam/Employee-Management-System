@@ -9,7 +9,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     UserRepository userRepository;
 
     @Override
-    public org.springframework.security.core.userdetails.UserDetails loadUserByUsername(String username)
+    public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
         User user = userRepository.getUserByUsername(username);
 
