@@ -3,15 +3,10 @@ package com.example.demo.token;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
-import java.security.Key;
-import java.security.SecureRandom;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -62,8 +57,5 @@ public class JwtServiceImpl implements JwtService{
         return Jwts.parserBuilder().setSigningKey(("B374A26A71490437AA024E4FADD5B497FDFF1A8EA6FF12F6FB65AF2720B59CCF")
                 .getBytes(StandardCharsets.UTF_8)).build().parseClaimsJws(token).getBody();
     }
-
-
-
 
 }
