@@ -6,25 +6,27 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-@Service@RequiredArgsConstructor
+@Service
+@RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService{
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    PasswordEncoder passwordEncoder;
     @Autowired
     JwtService jwtService;
-    private final AuthenticationManager authenticationManager;
+    @Autowired
+    AuthenticationManager authenticationManager;
     @Override
     public JwtAuthenticationResponse signup(SignUpRequest request) {
         JwtAuthenticationResponse jwtAuthenticationResponse = new JwtAuthenticationResponse();
-        User user = User.builder().firstName(request.getFirstName()).lastName(request.getLastName())
-                .email(request.getEmail()).password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.USER).build();
+        User user = User.builder().username(request.getUsername())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .build();
         userRepository.save(user);
-//        String jwt = jwtService.generateToken(user);
         return jwtAuthenticationResponse;
     }
 
@@ -36,10 +38,9 @@ public class AuthenticationServiceImpl implements AuthenticationService{
         }catch (AuthenticationException exception){
             throw new IllegalArgumentException("Invalid email or password.");
         }
-
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException());
-        String jwt = jwtService.generateToken(user);
+        String jwt = jwtService.generateToken((UserDetails) user);
         return JwtAuthenticationResponse.builder().token(jwt).build();
     }
 }
