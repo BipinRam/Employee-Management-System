@@ -11,10 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -40,9 +37,10 @@ public class AuthenticationServiceImpl implements AuthenticationService{
 
     @Override
     public JwtAuthenticationResponse signIn(SignInRequest request) {
+        Optional<User> users = userRepository.findByEmail(request.getEmail());
         try{
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+                    new UsernamePasswordAuthenticationToken(users.get().getUsername(), request.getPassword()));
         }catch (AuthenticationException exception){
             exception.printStackTrace();
             throw new IllegalArgumentException("Invalid email or password.");
