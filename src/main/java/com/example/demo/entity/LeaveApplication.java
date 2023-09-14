@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.sql.Date;
 
 @Entity
 @Getter
@@ -16,21 +16,28 @@ public class LeaveApplication {
     private Long id;
 
     @Column(name = "from_date")
+    @Temporal(TemporalType.DATE)
     private Date fromDate;
 
     @Column(name = "to_date")
+    @Temporal(TemporalType.DATE)
     private Date toDate;
 
     @Column(name = "reason")
     private String reason;
 
     @Column(name = "status")
-    private  String status;
+    private String status;
+
+    @Column(name = "number_of_leave")
+    private int numberOfLeave;
 
     @Column(name = "applied_date")
+    @Temporal(TemporalType.DATE)
     private Date appliedDate;
 
     @Column(name = "action_date")
+    @Temporal(TemporalType.DATE)
     private Date actionDate;
 
     @Column(name = "action_remarks")
