@@ -26,11 +26,16 @@ public class SecurityConfiguration {
     JwtAuthenticationFilter jwtAuthenticationFilter;
     @Autowired
     UserService userService;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(request -> request.requestMatchers("/api/v1/auth/signup" , "/api/v1/auth/signin")
-                        .permitAll().anyRequest().authenticated())
+                .authorizeHttpRequests(request ->
+                        request.requestMatchers("/api/v1/auth/signup" , "/api/v1/auth/signin")
+                                .permitAll()
+                                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
+                                .permitAll()
+                                .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(
                         jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
