@@ -1,13 +1,10 @@
 package com.example.demo.model;
 
-import com.example.demo.entity.Employee;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.sql.Date;
+
 @Getter
 @Setter
 public class LeaveApplicationModel {
@@ -17,6 +14,8 @@ public class LeaveApplicationModel {
     private Date fromDate;
 
     private Date toDate;
+
+    private int numberOfLeave;
 
     private String reason;
 
@@ -29,6 +28,8 @@ public class LeaveApplicationModel {
     private String actionRemarks;
 
     private Long employeeId;
+
+    private Long branchId;
 
     private EmployeeModel employee;
 

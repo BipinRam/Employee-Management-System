@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.model.BaseResponse;
 import com.example.demo.model.LeaveApplicationModel;
+import com.example.demo.model.PaymentModel;
 import com.example.demo.service.LeaveApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -62,6 +63,22 @@ public class LeaveApplicationController {
             baseResponse.setMessage("Wrong id");
             baseResponse.setCode(HttpStatus.BAD_REQUEST);
         }
+        return baseResponse;
+    }
+
+    @GetMapping(value = "/leaveReport")
+    public BaseResponse getReport  (@RequestBody LeaveApplicationModel leaveApplicationModel){
+        LeaveApplicationModel data = leaveApplicationService.getLeaveReport(leaveApplicationModel);
+        BaseResponse baseResponse = new BaseResponse();
+        if (data != null){
+            baseResponse.setData(data);
+            baseResponse.setMessage("Success");
+            baseResponse.setCode(HttpStatus.OK);
+        }else {
+            baseResponse.setMessage("Wrong id");
+            baseResponse.setCode(HttpStatus.BAD_REQUEST);
+        }
+
         return baseResponse;
     }
 
