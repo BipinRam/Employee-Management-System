@@ -44,15 +44,11 @@ public class LeaveApplicationService {
         Date fromDate = leaveApplication.getFromDate();
         Date toDate = leaveApplication.getToDate();
 
-//        LocalDate localFromDate = fromDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-//        LocalDate localToDate = toDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
         LocalDate localFromDate = fromDate.toLocalDate();
         LocalDate localToDate = toDate.toLocalDate();
         int numberOfLeave = (int) (ChronoUnit.DAYS.between(localFromDate, localToDate) + 1);
 
         leaveApplication.setNumberOfLeave(numberOfLeave);
-
 
         Optional<Employee> employee = employeeRepository.findById(leaveApplicationModel.getEmployeeId());
         Optional<Branch>branch = branchRepository.findById(leaveApplicationModel.getBranchId());
@@ -96,7 +92,8 @@ public class LeaveApplicationService {
             leaveApplicationModel.setStatus(leaveApplication.getStatus());
             leaveApplicationModel.setAppliedDate(leaveApplication.getAppliedDate());
             leaveApplicationModel.setActionDate(leaveApplication.getActionDate());
-            leaveApplicationModel.setActionRemarks(leaveApplicationModel.getActionRemarks());
+            leaveApplicationModel.setActionRemarks(leaveApplication.getActionRemarks());
+            leaveApplicationModel.setNumberOfLeave(leaveApplication.getNumberOfLeave());
 
             EmployeeModel employeeModel = new EmployeeModel();
             employeeModel.setEmployeeFullName(leaveApplication.getEmployee().getEmployeeFullName());
@@ -125,7 +122,8 @@ public class LeaveApplicationService {
                 leaveApplicationModel.setStatus(leaveApplication.getStatus());
                 leaveApplicationModel.setAppliedDate(leaveApplication.getAppliedDate());
                 leaveApplicationModel.setActionDate(leaveApplication.getActionDate());
-                leaveApplicationModel.setActionRemarks(leaveApplicationModel.getActionRemarks());
+                leaveApplicationModel.setActionRemarks(leaveApplication.getActionRemarks());
+                leaveApplicationModel.setNumberOfLeave(leaveApplication.getNumberOfLeave());
 
                 Employee employee = leaveApplication.getEmployee();
                 EmployeeModel employeeModel = new EmployeeModel();
@@ -143,7 +141,7 @@ public class LeaveApplicationService {
     }
 
     public LeaveApplicationModel getLeaveReport (LeaveApplicationModel leaveApplicationModel){
-        LeaveApplication leaveApplication =leaveApplicationRepository.findByEmployeeIdAndBranchIdAndFromDateAndToDateAndStatus(leaveApplicationModel.getEmployeeId() ,
+        LeaveApplication leaveApplication =leaveApplicationRepository.findByEmployeeIdAndBranchIdAndFromDateAndToDateAndStatus(leaveApplicationModel.getEmployeeId(),
                 leaveApplicationModel.getBranchId(), leaveApplicationModel.getFromDate() , leaveApplicationModel.getToDate() , leaveApplicationModel.getStatus());
             Optional<Employee> employeeOptional = employeeRepository.findById(leaveApplicationModel.getEmployeeId());
             Optional<Branch> branchOptional = branchRepository.findById(leaveApplicationModel.getBranchId());
@@ -155,6 +153,7 @@ public class LeaveApplicationService {
                 leaveApplicationModel.setFromDate(leaveApplication.getFromDate());
                 leaveApplicationModel.setToDate(leaveApplication.getToDate());
                 leaveApplicationModel.setStatus(leaveApplication.getStatus());
+                leaveApplicationModel.setAppliedDate(leaveApplication.getAppliedDate());
                 leaveApplicationModel.setNumberOfLeave(leaveApplication.getNumberOfLeave());
             }else {
                 return  null;

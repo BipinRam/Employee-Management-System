@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import com.example.demo.entity.LeaveApplication;
+import com.example.demo.leaveReport.LeaveReportServiceImpl;
 import com.example.demo.model.BaseResponse;
 import com.example.demo.model.LeaveApplicationModel;
 import com.example.demo.model.PaymentModel;
@@ -14,6 +16,9 @@ import java.util.List;
 public class LeaveApplicationController {
     @Autowired
     LeaveApplicationService leaveApplicationService;
+
+    @Autowired
+    LeaveReportServiceImpl leaveReportService;
 
     @PostMapping(value = "/leave")
     public BaseResponse create (@RequestBody LeaveApplicationModel leaveApplicationModel) throws Exception {
@@ -66,7 +71,22 @@ public class LeaveApplicationController {
         return baseResponse;
     }
 
-    @GetMapping(value = "/leaveReport")
+    @GetMapping(value = "/leaveReportByCriteria")
+    public BaseResponse getReport  (@RequestBody LeaveApplication leaveApplicationModel) {
+        List<LeaveApplication> data = leaveReportService.listAllLeaveApplication(leaveApplicationModel);
+        BaseResponse baseResponse = new BaseResponse();
+        if (data != null){
+            baseResponse.setData(data);
+            baseResponse.setMessage("Success");
+            baseResponse.setCode(HttpStatus.OK);
+        }else {
+            baseResponse.setMessage("Wrong id");
+            baseResponse.setCode(HttpStatus.BAD_REQUEST);
+        }
+
+        return baseResponse;
+    }
+    @GetMapping(value = "/leaveReportByQuery")
     public BaseResponse getReport  (@RequestBody LeaveApplicationModel leaveApplicationModel){
         LeaveApplicationModel data = leaveApplicationService.getLeaveReport(leaveApplicationModel);
         BaseResponse baseResponse = new BaseResponse();
