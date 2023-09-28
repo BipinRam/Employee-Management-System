@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
     Payment findByEmployeeIdAndMonthAndYear (Long employeeId , String Month , int year);
+
+    Payment findByEmployeeId (Long employeeId );
 }
