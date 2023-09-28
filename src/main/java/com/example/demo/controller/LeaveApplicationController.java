@@ -4,7 +4,6 @@ import com.example.demo.entity.LeaveApplication;
 import com.example.demo.leaveReport.LeaveReportServiceImpl;
 import com.example.demo.model.BaseResponse;
 import com.example.demo.model.LeaveApplicationModel;
-import com.example.demo.model.PaymentModel;
 import com.example.demo.service.LeaveApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
