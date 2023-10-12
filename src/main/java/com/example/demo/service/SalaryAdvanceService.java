@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Locale;
 import java.util.Optional;
 
 @Service
@@ -43,12 +44,12 @@ public class SalaryAdvanceService {
             throw new Exception("Amount is greater than 50 percentage of net salary");
         }
 
-        String currentMonth = String.valueOf(currentDate.getMonth());
+        String currentMonth = String.valueOf(currentDate.getMonth()).toLowerCase(Locale.ROOT);
         int currentYear = currentDate.getYear();
 
         String month = salaryAdvanceModel.getMonth();
         int year = salaryAdvanceModel.getYear();
-        if ((currentYear == year && currentMonth == month)|| (currentYear == year && currentMonth == month +1 )||
+        if ((currentYear == year && currentMonth.equals(month))|| (currentYear == year && currentMonth.equals(month +1 ))||
                 (currentYear == year + 1 && month == "january")){
             salaryAdvance.setMonth(salaryAdvanceModel.getMonth());
             salaryAdvance.setYear(salaryAdvanceModel.getYear());
@@ -68,6 +69,7 @@ public class SalaryAdvanceService {
             employeeModel.setMobileNumber(salaryAdvance.getEmployee().getMobileNumber());
             employeeModel.setEmail(salaryAdvance.getEmployee().getEmail());
             employeeModel.setBloodGroup(salaryAdvance.getEmployee().getBloodGroup());
+            salaryAdvanceModel.setEmployee(employeeModel);
         }else {
             throw new Exception("Invalid employee_id");
         }
