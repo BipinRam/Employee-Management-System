@@ -33,7 +33,7 @@ public class PaymentService {
 
         Optional<Deduction> deductionOptional = deductionRepository.findById(paymentModel.getDeductionId());
         Optional<Employee> employeeOptional =  employeeRepository.findById(paymentModel.getEmployeeId());
-        Optional<EmployeeSalary> empSalOptional = empSalRepository.findById(paymentModel.getEmployeeId());
+        Optional<EmployeeSalary> empSalOptional = empSalRepository.findById(paymentModel.getEmployeeSalaryId());
         if (deductionOptional.isPresent() && employeeOptional.isPresent() && empSalOptional.isPresent()){
             payment.setDeduction(deductionOptional.get());
             payment.setEmployee(employeeOptional.get());
@@ -171,7 +171,7 @@ public class PaymentService {
 
         Optional<Deduction> deductionOptional = deductionRepository.findById(paymentModel.getDeductionId());
         Optional<Employee> employeeOptional =  employeeRepository.findById(paymentModel.getEmployeeId());
-        Optional<EmployeeSalary> empSalOptional = empSalRepository.findById(paymentModel.getEmployeeId());
+        Optional<EmployeeSalary> empSalOptional = empSalRepository.findById(paymentModel.getEmployeeSalaryId());
         if (deductionOptional.isPresent() && employeeOptional.isPresent() && empSalOptional.isPresent()){
             payment.setDeduction(deductionOptional.get());
             payment.setEmployee(employeeOptional.get());
