@@ -12,6 +12,7 @@ import com.example.demo.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,21 +28,18 @@ public class AssetAssignService {
     AssetRepository assetRepository;
 
 //    CREATE
-    public AssetAssignModel create (AssetAssignModel assetAssignModel)throws Exception{
+    public AssetAssignModel create (AssetAssignModel assetAssignModel)throws Exception {
+        List<AssetAssign> assetAssigns = assetAssignRepository.findByAssetId(assetAssignModel.getAssetId());
         AssetAssign assetAssign = new AssetAssign();
         assetAssign.setAssignDate(assetAssignModel.getAssignDate());
         assetAssign.setAssignRemarks(assetAssignModel.getAssignRemarks());
 
-        Optional<Employee> employeeOptional = employeeRepository.findById(assetAssignModel.getEmployeeId());
-        Optional<Asset> assetOptional = assetRepository.findById(assetAssignModel.getAssetId());
-        if (employeeOptional.isPresent() ){
-            if ( assetOptional.isPresent()) {
-                AssetAssign assetId = assetAssignRepository.findByReturnDateAndAssetId(assetAssign.getReturnDate(), assetAssign.getAsset().getId());
-
-                if ( assetId == null || assetId != null && assetAssign.getReturnDate() !=null ) {
+            Optional<Employee> employeeOptional = employeeRepository.findById(assetAssignModel.getEmployeeId());
+            Optional<Asset> assetOptional = assetRepository.findById(assetAssignModel.getAssetId());
+            if (employeeOptional.isPresent()) {
+                if (assetOptional.isPresent()) {
                     assetAssign.setEmployee(employeeOptional.get());
                     assetAssign.setAsset(assetOptional.get());
-                    assetAssignRepository.save(assetAssign);
 
                     EmployeeModel employeeModel = new EmployeeModel();
                     employeeModel.setId(assetAssign.getEmployee().getId());
@@ -58,22 +56,29 @@ public class AssetAssignService {
                     assetModel.setSpecification(assetAssign.getAsset().getSpecification());
                     assetModel.setAddedDate(assetAssign.getAsset().getAddedDate());
                     assetAssignModel.setAssetModel(assetModel);
-
-                    assetAssignModel.setId(assetAssign.getId());
-
                 } else {
-                    throw new Exception("Same asset id");
+                    throw new Exception("Invalid asset id");
                 }
-            }else {
-                throw new Exception("Invalid asset id");
+            } else {
+                throw new Exception("invalid employee id");
             }
-        }else {
-            throw new Exception("invalid employee id");
+
+
+        if (assetAssigns.isEmpty()) {
+            assetAssignRepository.save(assetAssign);
+        } else {
+            for (AssetAssign a : assetAssigns) {
+                if (a.getReturnDate() != null) {
+                    assetAssignRepository.save(assetAssign);
+                } else {
+                    throw new Exception("Asset is already assigned to another employee");
+                }
+            }
+
         }
-       return assetAssignModel;
+        assetAssignModel.setId(assetAssign.getId());
+        return assetAssignModel;
     }
-
-
 //    UPDATE
 
     public AssetAssignModel update (int id , AssetAssignModel assetAssignModel){
