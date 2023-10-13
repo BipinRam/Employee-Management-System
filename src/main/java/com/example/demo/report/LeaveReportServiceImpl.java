@@ -1,4 +1,4 @@
-package com.example.demo.leaveReport;
+package com.example.demo.report;
 
 import com.example.demo.entity.LeaveApplication;
 import com.example.demo.repository.LeaveApplicationRepository;
