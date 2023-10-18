@@ -31,9 +31,10 @@ public class AssetAssignReportService {
         Join<Asset , AssetType> assetAssetTypeJoin = assetAssignAssetJoin.join("assetType" , JoinType.LEFT);
 
 //        List<Selection<Object>> selectionList = new ArrayList<>();
-//        selectionList.add(employeeJoin.get("employeeFullName").alias("employeeFullName"));
-//        selectionList.add(branchJoin.get("branchName").alias("branchName"));
 //        selectionList.add(assetAssetTypeJoin.get("type").alias("type"));
+//        selectionList.add(assetAssignAssetJoin.get("id").alias("id"));
+//        selectionList.add(employeeJoin.get("employeeFullName").alias("employeeFullName"));
+//        selectionList.add(assetAssignAssetJoin.get("serialNo"));
 //        selectionList.add(assetAssignRoot.get("assignDate").alias("assignDate"));
 //        selectionList.add(assetAssignRoot.get("returnDate").alias("returnDate"));
 
@@ -43,6 +44,7 @@ public class AssetAssignReportService {
                 assetAssignAssetJoin.get("serialNo"),
                 employeeJoin.get("employeeFullName"),
                 assetAssignRoot.get("assignDate"),
+                assetAssignRoot.get("returnDate"),
                 assetAssignRoot.get("assignRemarks"),
                 assetAssignRoot.get("returnRemarks")
         );
@@ -79,4 +81,5 @@ public class AssetAssignReportService {
 
         return results;
     }
+
 }
