@@ -5,12 +5,20 @@ import com.example.demo.entity.Asset;
 import com.example.demo.entity.AssetAssign;
 import com.example.demo.entity.AssetType;
 import com.example.demo.entity.Branch;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
+//import org.apache.pdfbox.pdmodel.PDDocument;
+//import org.apache.pdfbox.pdmodel.PDPage;
+//import org.apache.pdfbox.pdmodel.PDPageContentStream;
+//import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.springframework.stereotype.Service;
-
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,5 +60,18 @@ public class AssetInventoryReportService {
         List<AssetInventoryReportDto> results = typedQuery.getResultList();
 
         return results;
+    }
+    public byte[] generateAssetInventoryReportPdf(){
+        try{
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            Document document = new Document();
+            PdfWriter.getInstance(document , outputStream);
+            document.open();
+            document.add(new Paragraph("Asset Inventory Report"));
+            document.close();
+            return outputStream.toByteArray();
+        }catch (Exception exception){
+            throw  new RuntimeException(exception.getMessage());
+        }
     }
 }
